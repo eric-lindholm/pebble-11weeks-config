@@ -141,6 +141,26 @@
       left: 24px;
     }
 
+    .widget-select {
+      flex-shrink: 0;
+      min-width: 132px;
+      max-width: 46%;
+      height: 32px;
+      padding: 0 28px 0 10px;
+      border: 1px solid #dedede;
+      border-radius: 6px;
+      background: #fff;
+      color: #333;
+      font-size: 14px;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #888 50%), linear-gradient(135deg, #888 50%, transparent 50%);
+      background-position: calc(100% - 16px) 13px, calc(100% - 11px) 13px;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
     .save-wrap {
       padding: 20px 16px 0;
       text-align: center;
@@ -213,16 +233,17 @@
         </span>
       </label>
 
-      <label class="row" for="opt-watch-battery">
+      <div class="row">
         <span class="row-label">
-          <span class="row-title">Pebble battery</span>
+          <span class="row-title">Left bar</span>
+          <span class="row-hint">Step tracker shows a star at 10,000 steps</span>
         </span>
-        <span class="toggle">
-          <input type="checkbox" id="opt-watch-battery" data-flag="4" checked>
-          <span class="toggle-track"></span>
-          <span class="toggle-thumb"></span>
-        </span>
-      </label>
+        <select id="left-widget" class="widget-select">
+          <option value="battery">Pebble battery</option>
+          <option value="steps">Step tracker</option>
+          <option value="off">Off</option>
+        </select>
+      </div>
 
       <label class="row" for="opt-phone-bt">
         <span class="row-label">
@@ -292,17 +313,41 @@
     var FLAG_HIDE_BT_PHONE = 8;
     var FLAG_WEEK_START_SUNDAY = 16;
     var FLAG_HIDE_QUIET_TIME = 32;
+    var FLAG_SHOW_STEPS = 64;
     var FLAG_INVERT_COLORS = 128;
 
     var OPTION_IDS = [
       'opt-invert-colors',
       'opt-seconds',
       'opt-frame',
-      'opt-watch-battery',
       'opt-phone-bt',
       'opt-quiet-time',
       'opt-week-monday'
     ];
+
+    var LEFT_WIDGET_FLAGS = FLAG_HIDE_BATTERY | FLAG_SHOW_STEPS;
+
+    function decodeLeftWidget(configValue) {
+      if (configValue & FLAG_SHOW_STEPS) {
+        return 'steps';
+      }
+      if (configValue & FLAG_HIDE_BATTERY) {
+        return 'off';
+      }
+      return 'battery';
+    }
+
+    function applyLeftWidgetToConfig(config, mode) {
+      config &= ~LEFT_WIDGET_FLAGS;
+
+      if (mode === 'steps') {
+        config |= FLAG_HIDE_BATTERY | FLAG_SHOW_STEPS;
+      } else if (mode === 'off') {
+        config |= FLAG_HIDE_BATTERY;
+      }
+
+      return config;
+    }
 
     function getInputs() {
       var inputs = [];
@@ -318,7 +363,6 @@
         'opt-invert-colors': !!(configValue & FLAG_INVERT_COLORS),
         'opt-seconds': !(configValue & FLAG_HIDE_SEC),
         'opt-frame': !(configValue & FLAG_HIDE_FRAME),
-        'opt-watch-battery': !(configValue & FLAG_HIDE_BATTERY),
         'opt-phone-bt': !(configValue & FLAG_HIDE_BT_PHONE),
         'opt-quiet-time': !(configValue & FLAG_HIDE_QUIET_TIME),
         'opt-week-monday': !(configValue & FLAG_WEEK_START_SUNDAY)
@@ -344,7 +388,7 @@
         }
       }
 
-      return config;
+      return applyLeftWidgetToConfig(config, document.getElementById('left-widget').value);
     }
 
     function applyConfig(configValue) {
@@ -356,6 +400,8 @@
         input = inputs[i];
         input.checked = !!values[input.id];
       }
+
+      document.getElementById('left-widget').value = decodeLeftWidget(configValue);
     }
 
     function getQueryParam(name, defaultValue) {
