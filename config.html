@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>11 Weeks Revival</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #eaeaea;
+      color: #333;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      padding-bottom: 24px;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .header {
+      padding: 18px 16px 8px;
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      margin-top: 16px;
+    }
+
+    .section-title {
+      padding: 4px 16px;
+      color: #a8a8a8;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .section-body {
+      margin-top: 4px;
+      background: #f7f7f7;
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+    }
+
+    .section-foot {
+      padding: 8px 16px 0;
+      color: #a8a8a8;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .section-foot ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .section-foot li::before {
+      content: "• ";
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid #dedede;
+    }
+
+    .row:first-child { border-top: none; }
+
+    .row-label {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row-title {
+      font-size: 16px;
+    }
+
+    .row-hint {
+      margin-top: 2px;
+      color: #999;
+      font-size: 12px;
+    }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      flex-shrink: 0;
+      width: 52px;
+      height: 30px;
+    }
+
+    .toggle input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 52px;
+      height: 30px;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .toggle-track {
+      display: block;
+      width: 52px;
+      height: 30px;
+      border-radius: 6px;
+      background: #a8a8a8;
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 26px;
+      height: 26px;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+      transition: left 0.2s ease;
+      pointer-events: none;
+    }
+
+    .toggle input:checked + .toggle-track {
+      background: #ff4700;
+    }
+
+    .toggle input:checked + .toggle-track + .toggle-thumb {
+      left: 24px;
+    }
+
+    /* Preview */
+    .preview-wrap {
+      padding: 16px;
+      text-align: center;
+    }
+
+    .preview-face {
+      display: inline-block;
+      width: 200px;
+      height: 228px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      background: #000;
+      position: relative;
+    }
+
+    .preview-face.inverted {
+      background: #fff;
+      border-color: #ccc;
+    }
+
+    .preview-grid {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      width: 156px;
+      height: 187px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .preview-face.inverted .preview-grid {
+      border-color: rgba(0, 0, 0, 0.35);
+    }
+
+    .preview-clock {
+      position: absolute;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+
+    .preview-face.inverted .preview-clock {
+      color: #000;
+    }
+
+    .preview-summary {
+      margin-top: 12px;
+      color: #666;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .preview-flag {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #e0e0e0;
+      color: #555;
+      font-family: monospace;
+      font-size: 11px;
+    }
+
+    .save-wrap {
+      padding: 20px 16px 0;
+      text-align: center;
+    }
+
+    .save-btn {
+      width: 70%;
+      max-width: 280px;
+      height: 40px;
+      border: none;
+      border-radius: 6px;
+      background: #ff4700;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+
+    .save-btn:active {
+      background: #e03e00;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">11 Weeks Revival</div>
+
+  <div class="section">
+    <div class="section-title">Preview</div>
+    <div class="section-body">
+      <div class="preview-wrap">
+        <div id="preview-face" class="preview-face">
+          <div class="preview-grid"></div>
+          <div class="preview-clock">12:34</div>
+        </div>
+        <div id="preview-summary" class="preview-summary"></div>
+        <div id="preview-flag" class="preview-flag"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Appearance</div>
+    <div class="section-body">
+      <label class="row" for="opt-invert-colors">
+        <span class="row-label">
+          <span class="row-title">Inverted colors</span>
+          <span class="row-hint">White background, black foreground</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-invert-colors" data-flag="128" data-positive="true">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Watchface components</div>
+    <div class="section-body">
+      <label class="row" for="opt-seconds">
+        <span class="row-label">
+          <span class="row-title">Seconds tracker</span>
+          <span class="row-hint">Tap watch face to show/hide when enabled</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-seconds" data-flag="1" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <label class="row" for="opt-frame">
+        <span class="row-label">
+          <span class="row-title">Outline frame</span>
+          <span class="row-hint">Animated second ring around the clock</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-frame" data-flag="2" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <label class="row" for="opt-watch-battery">
+        <span class="row-label">
+          <span class="row-title">Pebble battery</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-watch-battery" data-flag="4" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <label class="row" for="opt-phone-bt">
+        <span class="row-label">
+          <span class="row-title">Phone battery &amp; Bluetooth</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-phone-bt" data-flag="8" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <label class="row" for="opt-quiet-time">
+        <span class="row-label">
+          <span class="row-title">Quiet time indicator</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-quiet-time" data-flag="32" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </div>
+    <div class="section-foot">
+      <ul>
+        <li>Frame and seconds use second ticks and use more battery.</li>
+        <li>When both are off, the watchface updates once per minute.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Calendar</div>
+    <div class="section-body">
+      <label class="row" for="opt-week-monday">
+        <span class="row-label">
+          <span class="row-title">Week starts on Monday</span>
+          <span class="row-hint">Off = Sunday start</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-week-monday" data-flag="16" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="save-wrap">
+    <button type="button" id="save-btn" class="save-btn">SAVE</button>
+  </div>
+
+  <script>
+  var INJECTED_CONFIG = null;
+  var RETURN_TO = 'pebblejs://close#';
+  </script>
+  <script>
+  (function() {
+    'use strict';
+
+    var PKEY_CONFIG = '11weeks-revival-config';
+
+    /* Flag bits — must match src/config.c */
+    var FLAG_HIDE_SEC = 1;
+    var FLAG_HIDE_FRAME = 2;
+    var FLAG_HIDE_BATTERY = 4;
+    var FLAG_HIDE_BT_PHONE = 8;
+    var FLAG_WEEK_START_SUNDAY = 16;
+    var FLAG_HIDE_QUIET_TIME = 32;
+    var FLAG_INVERT_COLORS = 128;
+
+    var OPTION_IDS = [
+      'opt-invert-colors',
+      'opt-seconds',
+      'opt-frame',
+      'opt-watch-battery',
+      'opt-phone-bt',
+      'opt-quiet-time',
+      'opt-week-monday'
+    ];
+
+    var OPTION_LABELS = {
+      'opt-invert-colors': 'Inverted colors',
+      'opt-seconds': 'Seconds',
+      'opt-frame': 'Outline frame',
+      'opt-watch-battery': 'Pebble battery',
+      'opt-phone-bt': 'Phone / Bluetooth',
+      'opt-quiet-time': 'Quiet time',
+      'opt-week-monday': 'Week starts Monday'
+    };
+
+    function getInputs() {
+      var inputs = [];
+      for (var i = 0; i < OPTION_IDS.length; i++) {
+        inputs.push(document.getElementById(OPTION_IDS[i]));
+      }
+      return inputs;
+    }
+
+    function decodeConfig(configValue) {
+      configValue = configValue | 0;
+      return {
+        'opt-invert-colors': !!(configValue & FLAG_INVERT_COLORS),
+        'opt-seconds': !(configValue & FLAG_HIDE_SEC),
+        'opt-frame': !(configValue & FLAG_HIDE_FRAME),
+        'opt-watch-battery': !(configValue & FLAG_HIDE_BATTERY),
+        'opt-phone-bt': !(configValue & FLAG_HIDE_BT_PHONE),
+        'opt-quiet-time': !(configValue & FLAG_HIDE_QUIET_TIME),
+        'opt-week-monday': !(configValue & FLAG_WEEK_START_SUNDAY)
+      };
+    }
+
+    function encodeConfig() {
+      var config = 0;
+      var inputs = getInputs();
+      var i, input, flag, positive;
+
+      for (i = 0; i < inputs.length; i++) {
+        input = inputs[i];
+        flag = parseInt(input.getAttribute('data-flag'), 10);
+        positive = input.getAttribute('data-positive') === 'true';
+
+        if (positive) {
+          if (input.checked) {
+            config |= flag;
+          }
+        } else if (!input.checked) {
+          config |= flag;
+        }
+      }
+
+      return config;
+    }
+
+    function applyConfig(configValue) {
+      var values = decodeConfig(configValue);
+      var inputs = getInputs();
+      var i, input;
+
+      for (i = 0; i < inputs.length; i++) {
+        input = inputs[i];
+        input.checked = !!values[input.id];
+      }
+
+      updatePreview(configValue);
+    }
+
+    function updatePreview(configValue) {
+      if (typeof configValue !== 'number' || isNaN(configValue)) {
+        configValue = encodeConfig();
+      }
+
+      var values = decodeConfig(configValue);
+      var lines = [];
+      var id;
+
+      for (id in OPTION_LABELS) {
+        if (OPTION_LABELS.hasOwnProperty(id)) {
+          lines.push(OPTION_LABELS[id] + ': ' + (values[id] ? 'ON' : 'OFF'));
+        }
+      }
+
+      document.getElementById('preview-summary').textContent = lines.join(' · ');
+      document.getElementById('preview-face').className =
+        'preview-face' + (values['opt-invert-colors'] ? ' inverted' : '');
+      document.getElementById('preview-flag').textContent = 'config = ' + configValue;
+    }
+
+    function getQueryParam(name, defaultValue) {
+      var query = window.location.search.substring(1);
+      var parts = query.split('&');
+      var i, pair;
+
+      for (i = 0; i < parts.length; i++) {
+        pair = parts[i].split('=');
+        if (pair[0] === name) {
+          return decodeURIComponent(pair[1].replace(/\+/g, ' '));
+        }
+      }
+
+      return defaultValue;
+    }
+
+    function readInitialConfig() {
+      if (typeof INJECTED_CONFIG === 'number' && !isNaN(INJECTED_CONFIG)) {
+        return INJECTED_CONFIG | 0;
+      }
+
+      var fromQuery = getQueryParam('config', null);
+      if (fromQuery !== null && fromQuery !== false && fromQuery !== '') {
+        var parsed = parseInt(fromQuery, 10);
+        if (!isNaN(parsed)) {
+          return parsed;
+        }
+      }
+
+      var stored = localStorage.getItem(PKEY_CONFIG);
+      if (stored !== null) {
+        var storedValue = parseInt(stored, 10);
+        if (!isNaN(storedValue)) {
+          return storedValue;
+        }
+      }
+
+      return 0;
+    }
+
+    function closeConfigPage(payload) {
+      var encoded = encodeURIComponent(JSON.stringify(payload));
+      var returnTo = getQueryParam('return_to', null);
+
+      if (!returnTo && typeof RETURN_TO === 'string' && RETURN_TO) {
+        returnTo = RETURN_TO;
+      }
+      if (!returnTo) {
+        returnTo = 'pebblejs://close#';
+      }
+
+      var closeUrl = returnTo + encoded;
+
+      // Pebble docs: document.location + return_to closes the config webview.
+      document.location = closeUrl;
+
+      // iOS WKWebView often blocks custom schemes from data: pages; iframe works.
+      setTimeout(function() {
+        var iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.setAttribute('width', '0');
+        iframe.setAttribute('height', '0');
+        iframe.src = closeUrl;
+        document.body.appendChild(iframe);
+      }, 100);
+    }
+
+    function saveAndClose() {
+      var configValue = encodeConfig();
+      localStorage.setItem(PKEY_CONFIG, String(configValue));
+      closeConfigPage({
+        KEY_CONFIG_VALUE: configValue,
+        config: configValue
+      });
+    }
+
+    function bindUi() {
+      var inputs = getInputs();
+      var i;
+
+      for (i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('change', function() {
+          updatePreview(encodeConfig());
+        });
+      }
+
+      document.getElementById('save-btn').addEventListener('click', saveAndClose);
+    }
+
+    bindUi();
+    applyConfig(readInitialConfig());
+  })();
+  </script>
+</body>
+</html>
