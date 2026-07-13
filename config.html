@@ -1,370 +1,491 @@
 <!DOCTYPE html>
-<html>
-  <head>
-  <title>11 Weeks Configuration</title>
-  <meta charset='UTF-8' />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src='js/anim-lib.min.js'></script>
-  <script src='js/watch-11w.min.js'></script>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>11 Weeks Revival</title>
   <style>
-  @font-face{font-family:'PFDinDisplayProLightWebfont';src:url("data:font/woff;base64,") format("woff");font-weight:normal;font-style:normal;font-variant:normal}@font-face{font-family:'PTSansRegularWebfont';src:url("data:font/woff;base64,") format("woff");font-weight:normal;font-style:normal;font-variant:normal}*{margin:0;padding:0}*:focus{outline-width:0}a{color:#ff4700;text-decoration:none}body{background-color:#eaeaea;margin-bottom:15px;font-size:1.2em;line-height:1.4em;-webkit-user-select:none !important;-moz-user-select:none !important;-ms-user-select:none !important;user-select:none !important}body,select,input[type=text],input[type=time],input[type=date]{font-family:'PFDinDisplayPro-Light',PFDinDisplayProLightWebfont,sans-serif;font-weight:normal}select,input[type=time],input[type=date]{-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;border:0;position:absolute;top:13px;color:#a8a8a8;font-size:1em;line-height:1em;background-color:#f7f7f7}input[type=date]{direction:rtl}select{right:30px;top:14px}input[type=time]{right:10px !important}input[type=date]{right:10px !important}.select-triangle{position:absolute;right:10px;top:20px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #ff4700}.item-container{color:#333;margin-top:15px}.item-container-header{padding:3px 10px;text-transform:uppercase;font-family:'PT Sans',PTSansRegularWebfont,sans-serif;font-size:.8em;font-weight:normal;color:#a8a8a8}.item-container-content{background-color:#f7f7f7;border-top:1px solid #dedede;border-bottom:1px solid #dedede}.item-container-footer{padding:3px 10px;font-size:.7em;line-height:1.4em;color:#a8a8a8}.item{position:relative;padding:10px;display:block;overflow:hidden}.item:not(:first-child){border-top:1px solid #dedede}.item-subtitle-wrapper{font-size:1em}.item-subtitle-wrapper .item-styled-toggle-wrapper{top:16px}.item-subtitle-wrapper .item-styled-checkbox{top:18px}.item-subtitle-wrapper .item-styled-radio{top:16px}.item-subtitle-wrapper .item-draggable-handle{top:18px}.item-subtitle{font-size:.7em;line-height:.7em;padding:.3em 0}.item-styled-toggle-wrapper{position:absolute;right:10px;top:8px;width:56px;height:30px;border-radius:5px;transition-timing-function:ease-in-out;transition-duration:.3s;transition-property:background-color}.item-styled-toggle{position:relative;background-color:#fff;width:28px;height:28px;border-radius:5px;top:1px;transition-timing-function:ease-in-out;transition-duration:.3s;transition-property:left}.item-toggle{display:none}.item-toggle+.item-styled-toggle-wrapper{background-color:#a8a8a8}.item-toggle:checked+.item-styled-toggle-wrapper{background-color:#ff4700}.item-toggle+.item-styled-toggle-wrapper .item-styled-toggle{left:1px}.item-toggle:checked+.item-styled-toggle-wrapper .item-styled-toggle{left:27px}.item-styled-toggle-bar{width:3px;height:15px;margin-left:3px;background-color:#eaeaea;float:left;position:relative;left:4px;top:7px}.item-styled-checkbox{position:absolute;right:10px;top:10px;width:21px;height:21px;border-radius:5px;border-width:2px;border-style:solid}.item-checkbox{display:none}.item-checkbox+.item-styled-checkbox{border-color:#dedede}.item-checkbox:checked+.item-styled-checkbox{border-color:#ff4700;background-color:#ff4700}.item-checkbox:checked+.item-styled-checkbox:before{content:"";display:block;position:relative;left:7px;width:6px;height:14px;border-color:#f7f7f7;border-width:0 2px 2px 0;border-style:solid;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg)}.item-styled-radio{position:absolute;right:10px;top:10px;width:21px;height:21px;border-radius:12px;border-width:2px;border-style:solid}.item-radio{display:none}.item-radio+.item-styled-radio{border-color:#dedede}.item-radio:checked+.item-styled-radio{border-color:#ff4700;background-color:#ff4700}.item-radio:checked+.item-styled-radio:before{content:"";display:block;position:relative;top:1px;left:6px;width:6px;height:14px;border-color:#f7f7f7;border-width:0 2px 2px 0;border-style:solid;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg)}.item-color{display:none}.item-styled-color{background:#f7f7f7}.item-styled-color .value{position:absolute;right:10px;top:10px;width:56px;height:30px;border-radius:5px;border-color:#a8a8a8;border-width:1px;border-style:solid}.item-styled-color .color-box-wrap{display:none;box-sizing:border-box;position:relative;height:0;width:100%;padding:0 0 100% 0;margin:.6em 0 0}.item-styled-color .color-box-wrap.show{display:block}.item-styled-color .color-box-wrap .color-box-container{position:absolute;height:99.97%;width:100%;left:0;top:0}.item-styled-color .color-box-wrap .color-box-container .color-box{float:left;cursor:pointer}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-tl{border-top-left-radius:5px}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-tr{border-top-right-radius:5px}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-bl{border-bottom-left-radius:5px}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-br{border-bottom-right-radius:5px}.item-date,.item-time{position:absolute;color:#f7f7f7 !important}.item-styled-date,.item-styled-time{position:absolute;top:13px;right:10px;color:#a8a8a8;font-size:1em;line-height:1em;background-color:#f7f7f7}.item-input-wrapper{border-radius:5px;border:2px solid #dedede}.item-input-wrapper-button{box-sizing:border-box;width:77%}.item-input{border:0;background-color:transparent;padding:0 10px 7px 10px;font-size:13px;width:100%;box-sizing:border-box}.button-container{text-align:center}.item-button{width:60%;height:35px;background-color:#ff4700;border-radius:5px;color:white;font-size:.8em;border:0;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none}.item-input-button{position:absolute;right:10px;top:9px;width:20%}.tab-buttons{display:table;width:100%;box-sizing:border-box;table-layout:fixed}.tab-button{display:table-cell;position:relative;color:#ff4700;border:1px solid #ff4700;border-right-width:0;font-size:14px;padding:5px 0;text-align:center;right:-1px}.tab-button:first-child{border-top-left-radius:5px;border-bottom-left-radius:5px;border-right-width:0}.tab-button:last-child{border-top-right-radius:5px;border-bottom-right-radius:5px;border-right-width:1px}.tab-button.active{background-color:#ff4700;color:#f7f7f7}.item-slider{position:relative;top:8px;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;height:30px;width:79%;overflow:hidden;background-color:transparent;margin-top:-10px}.item-slider::-webkit-slider-thumb:before{content:"";position:absolute;top:11px;left:-1001px;height:2px;width:1000px;background:#ff4700}.item-slider::-webkit-slider-thumb{-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;position:relative;top:-13px;height:28px;width:28px;background-color:#fff;border-radius:5px;border:2px solid #eaeaea}.item-slider::-webkit-slider-runnable-track{height:2px;background-color:#dedede}.item-slider::-webkit-slider-thumb:after{content:"lll";position:absolute;left:4px;top:3px;height:12px;width:10px;font-weight:normal;text-align:center;color:#dedede;font-size:16px;letter-spacing:1px}.item-slider-text{position:absolute;top:6px;right:10px;width:16%}.item-slider-text .item-input{text-align:center}.delete-item{width:30px;height:30px;right:5px;top:5px;position:absolute;border-radius:6px}.delete-item:before,.delete-item:after{content:'';position:absolute;width:24px;height:2px;background-color:#a8a8a8;border-radius:2px;top:16px}.delete-item:before{-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg);left:3px}.delete-item:after{-webkit-transform:rotate(-45deg);-moz-transform:rotate(-45deg);-ms-transform:rotate(-45deg);-o-transform:rotate(-45deg);transform:rotate(-45deg);right:3px}.add-item{color:#ff4700}.item-draggable-handle{position:absolute;right:5px;top:10px;height:28px;width:28px}.item-draggable-handle-bar{margin-top:5px;height:2px;width:20px;background-color:#a8a8a8;text-align:center}[draggable=true]{background-color:#f7f7f7;border:2px solid #eaeaea;border-radius:2px}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  ul {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 1em;
-    text-indent: -0.5em;
-  }
+    body {
+      background: #eaeaea;
+      color: #333;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      padding-bottom: 24px;
+      -webkit-user-select: none;
+      user-select: none;
+    }
 
-  ul li:before {
-    content: "*";
-    display: inline-block;
-    text-align: center;
-    width: 0.5em;
-  }
+    .header {
+      padding: 18px 16px 8px;
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
-  .hide {
-    display: none;
-  }
+    .section {
+      margin-top: 16px;
+    }
 
-  .show {
-    display: block;
-  }
+    .section-title {
+      padding: 4px 16px;
+      color: #a8a8a8;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
 
-  .title {
-    padding: 15px 10px;
-    text-transform: uppercase;
-    font-family: 'PT Sans', sans-serif;
-    font-size: 1.2em;
-    font-weight: 500;
-    color: #888888;
-    text-align: center;
-  }
+    .section-body {
+      margin-top: 4px;
+      background: #f7f7f7;
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+    }
 
-  .watch {
-    text-align: center;
-  }
+    .section-foot {
+      padding: 8px 16px 0;
+      color: #a8a8a8;
+      font-size: 12px;
+      line-height: 1.5;
+    }
 
-  .watch div, canvas {
-    height: 168px;
-  }
+    .section-foot ul {
+      list-style: none;
+      padding-left: 0;
+    }
 
-  #watch-background {
-    background-color: black;
-    width: 144px;
-    padding: 0px;
-    margin: 0px;
-    display: inline-block;
-  }
+    .section-foot li::before {
+      content: "• ";
+    }
 
-  #watch {
-    background-color: black;
-    opacity: 0.8;
-  }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid #dedede;
+    }
 
-  .preview-disabled {
-    color: #999;
-    padding: 60px 20px;
-    font-size: 0.9em;
-  }
+    .row:first-child { border-top: none; }
+
+    .row-label {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row-title {
+      font-size: 16px;
+    }
+
+    .row-hint {
+      margin-top: 2px;
+      color: #999;
+      font-size: 12px;
+    }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      flex-shrink: 0;
+      width: 52px;
+      height: 30px;
+    }
+
+    .toggle input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 52px;
+      height: 30px;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .toggle-track {
+      display: block;
+      width: 52px;
+      height: 30px;
+      border-radius: 6px;
+      background: #a8a8a8;
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 26px;
+      height: 26px;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+      transition: left 0.2s ease;
+      pointer-events: none;
+    }
+
+    .toggle input:checked + .toggle-track {
+      background: #ff4700;
+    }
+
+    .toggle input:checked + .toggle-track + .toggle-thumb {
+      left: 24px;
+    }
+
+    .widget-select {
+      flex-shrink: 0;
+      min-width: 132px;
+      max-width: 46%;
+      height: 32px;
+      padding: 0 28px 0 10px;
+      border: 1px solid #dedede;
+      border-radius: 6px;
+      background: #fff;
+      color: #333;
+      font-size: 14px;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #888 50%), linear-gradient(135deg, #888 50%, transparent 50%);
+      background-position: calc(100% - 16px) 13px, calc(100% - 11px) 13px;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .save-wrap {
+      padding: 20px 16px 0;
+      text-align: center;
+    }
+
+    .save-btn {
+      width: 70%;
+      max-width: 280px;
+      height: 40px;
+      border: none;
+      border-radius: 6px;
+      background: #ff4700;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+
+    .save-btn:active {
+      background: #e03e00;
+    }
   </style>
-  </head>
+</head>
+<body>
+  <div class="header">11 Weeks Revival</div>
 
-  <body>
-    <h1 class='title'>
-      <div class='en'>11 Weeks Configuration</div>
-      <div class='zh-Hans'>11周 表盘配置</div>
-      <div class='zh-Hant'>11周 錶盤設定</div>
-      <div class='ja'>11週間　設定</div>
-    </h1>
-
-    <div class='item-container'>
-      <div class='item-container-header'>
-        <div class='en'>Preview</div>
-        <div class='zh-Hans'>预览</div>
-        <div class='zh-Hant'>預覽</div>
-        <div class='ja'>プレビュー</div>
-      </div>
-      <div class='item-container-content watch'>
-        <div class='item'>
-          <div id='watch-background'>
-            <canvas id='watch' width='144' height='168'>
-              <div class='en'>I am sorry that the preview (using &lt;canvas&gt;) is not supported by your device.</div>
-              <div class='zh-Hans'>很抱歉，您的设备不支持（使用了&lt;canvas&gt;的）预览。</div>
-              <div class='zh-Hant'>很抱歉，您的設備不支持（使用了&lt;canvas&gt;的）預覽。</div>
-              <div class='ja'>&lt;canvas&gt;をサポートしないデバイスを使っているため、プレビューできません。</div>
-            </canvas>
-          </div>
-        </div>
-      </div>
+  <div class="section">
+    <div class="section-title">Appearance</div>
+    <div class="section-body">
+      <label class="row" for="opt-invert-colors">
+        <span class="row-label">
+          <span class="row-title">Inverted colors</span>
+          <span class="row-hint">White background, black foreground</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-invert-colors" data-flag="128" data-positive="true">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
     </div>
+  </div>
 
-    <div class='item-container'>
-      <div class='item-container-header'>
-        <div class='en'>Optional Components</div>
-        <div class='zh-Hans'>可选组件</div>
-        <div class='zh-Hant'>可選部件</div>
-        <div class='ja'>オプショナルコンポーネント</div>
-      </div>
-      <div class='item-container-content'>
-        <label class='item'>
-          <div class='en'>Seconds (refresh per sec)</div>
-          <div class='zh-Hans'>记秒</div>
-          <div class='zh-Hant'>記秒</div>
-          <div class='ja'>秒</div>
-          <input id='sec-layer' type='checkbox' class='item-toggle' checked='checked'>
-        </label>
-        <label class='item'>
-          <div class='en'>Outline Frame (refresh per sec)</div>
-          <div class='zh-Hans'>计时外框</div>
-          <div class='zh-Hant'>計時外框</div>
-          <div class='ja'>外枠</div>
-          <input id='frame-layer' type='checkbox' class='item-toggle' checked='checked'>
-        </label>
-        <label class='item'>
-          <div class='en'>Pebble Battery</div>
-          <div class='zh-Hans'>手表电量</div>
-          <div class='zh-Hant'>手錶電量</div>
-          <div class='ja'>時計電池量</div>
-          <input id='battery-layer' type='checkbox' class='item-toggle' checked='checked'>
-        </label>
-        <label class='item'>
-          <div class='en'>Phone Battery &amp; Bluetooth</div>
-          <div class='zh-Hans'>手机电量与蓝牙</div>
-          <div class='zh-Hant'>手機電量與藍牙</div>
-          <div class='ja'>携帯電池量とBluetooth</div>
-          <input id='bt-phone-layer' type='checkbox' class='item-toggle' checked='checked'>
-        </label>
-        <label class='item'>
-          <div class='en'>Week starts on Monday</div>
-          <div class='zh-Hans'>周一为每周第一天</div>
-          <div class='zh-Hant'>週一為每週第一天</div>
-          <div class='ja'>月曜日を週の始まりにする</div>
-          <input id='week-start-monday' type='checkbox' class='item-toggle' checked='checked'>
-        </label>
-      </div>
-      <div class='item-container-footer'>
-        <div class='en'>
-          <ul>
-            <li>The outline frame is using a timer and second tick, which will increase battery usage.</li>
-            <li>The seconds part need second tick, which will increase battery usage a little.</li>
-            <li>Minute tick will be used when outline frame and seconds be hidden, which will save power.</li>
-          </ul>
-        </div>
-        <div class='zh-Hans'>
-          <ul>
-            <li>计时外框需使用定时器并需要每秒刷新,会增加电量消耗。</li>
-            <li>记秒需要每秒刷新,会稍增加电量消耗。</li>
-            <li>隐藏计时外框和记秒部分,将改为每分刷新,可节省部分电量。</li>
-          </ul>
-        </div>
-        <div class='zh-Hant'>
-          <ul>
-            <li>計時外框需使用定時器並需每秒更新,將增加電量消耗。</li>
-            <li>記秒需每秒更新,將稍許增加電量消耗。</li>
-            <li>隱藏計時外框和記秒部分,將切為每分更新,可節省部分電量。</li>
-          </ul>
-        </div>
-        <div class='ja'>
-          <ul>
-            <li>「外枠」はタイマーと秒更新が必要なため、電池使用量が増えることになります。</li>
-            <li>「秒」は秒更新が必要なため、電池使用量が少し増えることになります。</li>
-            <li>「外枠」と「秒」を非表示にしたら、分更新になるため、電池使用量が少なくなります。</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+  <div class="section">
+    <div class="section-title">Watchface components</div>
+    <div class="section-body">
+      <label class="row" for="opt-seconds">
+        <span class="row-label">
+          <span class="row-title">Seconds tracker</span>
+          <span class="row-hint">Tap watch face to show/hide when enabled</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-seconds" data-flag="1" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
 
-    <div class='item-container'>
-      <div class='button-container'>
-        <input id='submit_button' type='button' class='item-button' value='SAVE' />
-        <div id='submit_button-en' style='display:none;'>SAVE</div>
-        <div id='submit_button-zh-Hans' style='display:none;'>保存</div>
-        <div id='submit_button-zh-Hant' style='display:none;'>存儲</div>
-        <div id='submit_button-ja' style='display:none;'>保存</div>
+      <label class="row" for="opt-frame">
+        <span class="row-label">
+          <span class="row-title">Outline frame</span>
+          <span class="row-hint">Animated second ring around the clock</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-frame" data-flag="2" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <div class="row">
+        <span class="row-label">
+          <span class="row-title">Left bar</span>
+          <span class="row-hint">Step tracker shows a star at 10,000 steps</span>
+        </span>
+        <select id="left-widget" class="widget-select">
+          <option value="battery">Pebble battery</option>
+          <option value="steps">Step tracker</option>
+          <option value="off">Off</option>
+        </select>
       </div>
+
+      <label class="row" for="opt-phone-bt">
+        <span class="row-label">
+          <span class="row-title">Phone battery &amp; Bluetooth</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-phone-bt" data-flag="8" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <label class="row" for="opt-quiet-time">
+        <span class="row-label">
+          <span class="row-title">Quiet time indicator</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-quiet-time" data-flag="32" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
     </div>
-  </body>
+    <div class="section-foot">
+      <ul>
+        <li>Frame and seconds use second ticks and use more battery.</li>
+        <li>When both are off, the watchface updates once per minute.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Calendar</div>
+    <div class="section-body">
+      <label class="row" for="opt-week-monday">
+        <span class="row-label">
+          <span class="row-title">Week starts on Monday</span>
+          <span class="row-hint">Off = Sunday start</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-week-monday" data-flag="16" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="save-wrap">
+    <button type="button" id="save-btn" class="save-btn">SAVE</button>
+  </div>
+
   <script>
-  var keys = {
-    'sec-layer': 1,
-    'frame-layer': 2,
-    'battery-layer': 4,
-    'bt-phone-layer': 8,
-    'week-start-monday': 16
-  };
-  function getConfigData(needSave) {
+  var INJECTED_CONFIG = null;
+  var RETURN_TO = 'pebblejs://close#';
+  </script>
+  <script>
+  (function() {
+    'use strict';
 
-    var options = {};
+    var PKEY_CONFIG = '11weeks-revival-config';
 
-    for (var key in keys) {
-      var ctrl = document.getElementById(key);
-      var value = ctrl.checked;
-      options[key] = value;
+    /* Flag bits — must match src/config.c */
+    var FLAG_HIDE_SEC = 1;
+    var FLAG_HIDE_FRAME = 2;
+    var FLAG_HIDE_BATTERY = 4;
+    var FLAG_HIDE_BT_PHONE = 8;
+    var FLAG_WEEK_START_SUNDAY = 16;
+    var FLAG_HIDE_QUIET_TIME = 32;
+    var FLAG_SHOW_STEPS = 64;
+    var FLAG_INVERT_COLORS = 128;
 
-      if (needSave) {
-        // if need save, save for next launch
-        if (!value) {
-          localStorage.setItem(key, '1');
-        } else {
-          localStorage.removeItem(key);
-        }
+    var OPTION_IDS = [
+      'opt-invert-colors',
+      'opt-seconds',
+      'opt-frame',
+      'opt-phone-bt',
+      'opt-quiet-time',
+      'opt-week-monday'
+    ];
+
+    var LEFT_WIDGET_FLAGS = FLAG_HIDE_BATTERY | FLAG_SHOW_STEPS;
+
+    function decodeLeftWidget(configValue) {
+      if (configValue & FLAG_SHOW_STEPS) {
+        return 'steps';
       }
+      if (configValue & FLAG_HIDE_BATTERY) {
+        return 'off';
+      }
+      return 'battery';
     }
 
-    // console.log('Got options: ' + JSON.stringify(options));
-    return options;
-  }
+    function applyLeftWidgetToConfig(config, mode) {
+      config &= ~LEFT_WIDGET_FLAGS;
 
-  function getQueryParam(variable, defaultValue) {
-    var query = location.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split('=');
-      if (pair[0] === variable) {
-        return decodeURIComponent(pair[1]);
+      if (mode === 'steps') {
+        config |= FLAG_HIDE_BATTERY | FLAG_SHOW_STEPS;
+      } else if (mode === 'off') {
+        config |= FLAG_HIDE_BATTERY;
       }
-    }
-    return defaultValue || false;
-  }
 
-  function getConfigFlags() {
-    var options = getConfigData(true);
-    var config = 0;
-    for (var key in keys) {
-      if (!options[key]) {
-        config |= keys[key];
+      return config;
+    }
+
+    function getInputs() {
+      var inputs = [];
+      for (var i = 0; i < OPTION_IDS.length; i++) {
+        inputs.push(document.getElementById(OPTION_IDS[i]));
       }
+      return inputs;
     }
-    return {
-      'config': config
-    };
-  }
 
-  function getSupportedLanguage(lang) {
-    var ret = 'en',
-        hans = ['-hans', '-cn'],
-        i,
-        isHans = false;
-    if (lang) {
-      lang = lang.toLowerCase();
-      if (lang.startsWith('zh')) {
-        for (i = 0; i < hans.length; i++) {
-          if (lang.indexOf(hans[i]) >= 0) {
-            isHans = true;
-            break;
+    function decodeConfig(configValue) {
+      configValue = configValue | 0;
+      return {
+        'opt-invert-colors': !!(configValue & FLAG_INVERT_COLORS),
+        'opt-seconds': !(configValue & FLAG_HIDE_SEC),
+        'opt-frame': !(configValue & FLAG_HIDE_FRAME),
+        'opt-phone-bt': !(configValue & FLAG_HIDE_BT_PHONE),
+        'opt-quiet-time': !(configValue & FLAG_HIDE_QUIET_TIME),
+        'opt-week-monday': !(configValue & FLAG_WEEK_START_SUNDAY)
+      };
+    }
+
+    function encodeConfig() {
+      var config = 0;
+      var inputs = getInputs();
+      var i, input, flag, positive;
+
+      for (i = 0; i < inputs.length; i++) {
+        input = inputs[i];
+        flag = parseInt(input.getAttribute('data-flag'), 10);
+        positive = input.getAttribute('data-positive') === 'true';
+
+        if (positive) {
+          if (input.checked) {
+            config |= flag;
           }
+        } else if (!input.checked) {
+          config |= flag;
         }
-
-        ret = isHans ? 'zh-Hans' : 'zh-Hant';
-      } else if (lang.startsWith('ja')) {
-        ret = 'ja';
       }
+
+      return applyLeftWidgetToConfig(config, document.getElementById('left-widget').value);
     }
 
-    return ret;
-  }
+    function applyConfig(configValue) {
+      var values = decodeConfig(configValue);
+      var inputs = getInputs();
+      var i, input;
 
-  function setUILanguage(lang) {
-    lang = getSupportedLanguage(lang);
-    var ctrls = {
-      'submit_button': 'value'
-    }, langClasses = [
-      'en', 'zh-Hans', 'zh-Hant', 'ja'
-    ], lables, i, j, isSame;
-
-    for (i = 0; i < langClasses.length; i++) {
-      labels = document.getElementsByClassName(langClasses[i]);
-      isSame = lang === langClasses[i];
-      for (j = 0; j < labels.length; j++) {
-        labels[j].classList.remove(isSame ? 'hide' : 'show');
-        labels[j].classList.add(isSame ? 'show' : 'hide');
+      for (i = 0; i < inputs.length; i++) {
+        input = inputs[i];
+        input.checked = !!values[input.id];
       }
-    }
-    document.getElementsByTagName('html')[0].setAttribute('lang', lang);
 
-    for (var c in ctrls) {
-      var ctrl = document.getElementById(c);
-      var div = document.getElementById(c + '-' + lang);
-      if (ctrl && div) {
-        ctrl[ctrls[c]] = div.innerHTML;
+      document.getElementById('left-widget').value = decodeLeftWidget(configValue);
+    }
+
+    function getQueryParam(name, defaultValue) {
+      var query = window.location.search.substring(1);
+      var parts = query.split('&');
+      var i, pair;
+
+      for (i = 0; i < parts.length; i++) {
+        pair = parts[i].split('=');
+        if (pair[0] === name) {
+          return decodeURIComponent(pair[1].replace(/\+/g, ' '));
+        }
       }
-    }
-  }
 
-  // Initialize watch preview
-  function drawWatch() {
-    var canvas = document.getElementById('watch');
-    if (canvas && canvas.getContext) {
-      images.init(function () {
-        watch.getConfig = getConfigData;
-        watch.setCanvas(canvas);
-        watch.beginDraw();
+      return defaultValue;
+    }
+
+    function readInitialConfig() {
+      if (typeof INJECTED_CONFIG === 'number' && !isNaN(INJECTED_CONFIG)) {
+        return INJECTED_CONFIG | 0;
+      }
+
+      var fromQuery = getQueryParam('config', null);
+      if (fromQuery !== null && fromQuery !== false && fromQuery !== '') {
+        var parsed = parseInt(fromQuery, 10);
+        if (!isNaN(parsed)) {
+          return parsed;
+        }
+      }
+
+      var stored = localStorage.getItem(PKEY_CONFIG);
+      if (stored !== null) {
+        var storedValue = parseInt(stored, 10);
+        if (!isNaN(storedValue)) {
+          return storedValue;
+        }
+      }
+
+      return 0;
+    }
+
+    function closeConfigPage(payload) {
+      var encoded = encodeURIComponent(JSON.stringify(payload));
+      var returnTo = getQueryParam('return_to', null);
+
+      if (!returnTo && typeof RETURN_TO === 'string' && RETURN_TO) {
+        returnTo = RETURN_TO;
+      }
+      if (!returnTo) {
+        returnTo = 'pebblejs://close#';
+      }
+
+      var closeUrl = returnTo + encoded;
+
+      // Pebble docs: document.location + return_to closes the config webview.
+      document.location = closeUrl;
+
+      // iOS WKWebView often blocks custom schemes from data: pages; iframe works.
+      setTimeout(function() {
+        var iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.setAttribute('width', '0');
+        iframe.setAttribute('height', '0');
+        iframe.src = closeUrl;
+        document.body.appendChild(iframe);
+      }, 100);
+    }
+
+    function saveAndClose() {
+      var configValue = encodeConfig();
+      localStorage.setItem(PKEY_CONFIG, String(configValue));
+      closeConfigPage({
+        KEY_CONFIG_VALUE: configValue,
+        config: configValue
       });
     }
-  }
 
-  // Add custom toggle styling
-  (function() {
-    var toggles = document.querySelectorAll('.item-toggle');
-    for (var i = 0; i < toggles.length; i++) {
-      var toggle = toggles[i];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'item-styled-toggle-wrapper';
-
-      var styledToggle = document.createElement('div');
-      styledToggle.className = 'item-styled-toggle';
-
-      for (var j = 0; j < 3; j++) {
-        var bar = document.createElement('div');
-        bar.className = 'item-styled-toggle-bar';
-        styledToggle.appendChild(bar);
-      }
-
-      wrapper.appendChild(styledToggle);
-      toggle.parentNode.insertBefore(wrapper, toggle.nextSibling);
-
-      // Add change listener to invalidate cache when toggled
-      toggle.addEventListener('change', function() {
-        if (watch && watch.imageBuff) {
-          watch.imageBuff.buff = null;
-          watch.imageBuff.time = 0;
-        }
-      });
+    function bindUi() {
+      document.getElementById('save-btn').addEventListener('click', saveAndClose);
     }
-  })();
 
-  var submitButton = document.getElementById('submit_button');
-  submitButton.addEventListener('click', function() {
-    console.log('Submit');
-
-    // Set the return URL depending on the runtime environment
-    var return_to = getQueryParam('return_to', 'pebblejs://close#');
-    document.location = return_to + encodeURIComponent(JSON.stringify(getConfigFlags()));
-  });
-
-  (function() {
-    // Load configuration from URL parameter or localStorage
-    var configFromUrl = getQueryParam('config', null);
-
-    if (configFromUrl !== null && configFromUrl !== false) {
-      // Config passed from Pebble app
-      var configValue = parseInt(configFromUrl);
-      for (var key in keys) {
-        var ctrl = document.getElementById(key);
-        // If bit is set in config, option is DISABLED
-        ctrl.checked = !(configValue & keys[key]);
-      }
-    } else {
-      // Fallback to localStorage
-      for (var key in keys) {
-        var ctrl = document.getElementById(key);
-        var value = localStorage[key];
-        ctrl.checked = value ? false : true;
-      }
-    }
-    setUILanguage(navigator.language || navigator.userLanguage);
-    drawWatch();
+    bindUi();
+    applyConfig(readInitialConfig());
   })();
   </script>
+</body>
 </html>
