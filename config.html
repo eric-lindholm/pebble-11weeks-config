@@ -184,6 +184,102 @@
     .save-btn:active {
       background: #e03e00;
     }
+
+    .beta-panel {
+      border-top: 1px solid #dedede;
+    }
+
+    .beta-panel > summary {
+      list-style: none;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 16px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .beta-panel > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .beta-panel > summary::after {
+      content: "▸";
+      float: right;
+      color: #999;
+    }
+
+    .beta-panel[open] > summary::after {
+      content: "▾";
+    }
+
+    .beta-hint {
+      display: block;
+      margin-top: 2px;
+      color: #999;
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+    .custom-colors {
+      padding: 0 16px 12px;
+    }
+
+    .custom-colors.hidden {
+      display: none;
+    }
+
+    .swatch-title {
+      margin: 12px 0 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+    }
+
+    .swatch {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%;
+      cursor: pointer;
+    }
+
+    .swatch input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .swatch span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+
+    .swatch input:checked + span {
+      border-color: #ff4700;
+      box-shadow: 0 0 0 1px #ff4700;
+    }
   </style>
 </head>
 <body>
@@ -203,6 +299,30 @@
           <span class="toggle-thumb"></span>
         </span>
       </label>
+
+      <details class="beta-panel">
+        <summary>
+          Beta: custom colors
+          <span class="beta-hint">Optional Pebble palette background and foreground</span>
+        </summary>
+        <label class="row" for="opt-custom-colors">
+          <span class="row-label">
+            <span class="row-title">Use custom colors</span>
+            <span class="row-hint">Overrides inverted colors when enabled</span>
+          </span>
+          <span class="toggle">
+            <input type="checkbox" id="opt-custom-colors">
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </span>
+        </label>
+        <div id="custom-colors" class="custom-colors hidden">
+          <div class="swatch-title">Background</div>
+          <div id="bg-swatch-grid" class="swatch-grid"></div>
+          <div class="swatch-title">Foreground</div>
+          <div id="fg-swatch-grid" class="swatch-grid"></div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -305,6 +425,8 @@
     'use strict';
 
     var PKEY_CONFIG = '11weeks-revival-config';
+    var PKEY_COLOR_BG = '11weeks-revival-color-bg';
+    var PKEY_COLOR_FG = '11weeks-revival-color-fg';
 
     /* Flag bits — must match src/config.c */
     var FLAG_HIDE_SEC = 1;
@@ -315,6 +437,22 @@
     var FLAG_HIDE_QUIET_TIME = 32;
     var FLAG_SHOW_STEPS = 64;
     var FLAG_INVERT_COLORS = 128;
+    var FLAG_CUSTOM_COLORS = 256;
+    var COLOR_FLAG_MASK = FLAG_INVERT_COLORS | FLAG_CUSTOM_COLORS;
+
+    var PEBBLE_PALETTE = [
+      0x000000, 0x000055, 0x0000AA, 0x0000FF, 0x005500, 0x005555, 0x0055AA, 0x0055FF,
+      0x00AA00, 0x00AA55, 0x00AAAA, 0x00AAFF, 0x00FF00, 0x00FF55, 0x00FFAA, 0x00FFFF,
+      0x550000, 0x550055, 0x5500AA, 0x5500FF, 0x555500, 0x555555, 0x5555AA, 0x5555FF,
+      0x55AA00, 0x55AA55, 0x55AAAA, 0x55AAFF, 0x55FF00, 0x55FF55, 0x55FFAA, 0x55FFFF,
+      0xAA0000, 0xAA0055, 0xAA00AA, 0xAA00FF, 0xAA5500, 0xAA5555, 0xAA55AA, 0xAA55FF,
+      0xAAAA00, 0xAAAA55, 0xAAAAAA, 0xAAAAFF, 0xAAFF00, 0xAAFF55, 0xAAFFAA, 0xAAFFFF,
+      0xFF0000, 0xFF0055, 0xFF00AA, 0xFF00FF, 0xFF5500, 0xFF5555, 0xFF55AA, 0xFF55FF,
+      0xFFAA00, 0xFFAA55, 0xFFAAAA, 0xFFAAFF, 0xFFFF00, 0xFFFF55, 0xFFFFAA, 0xFFFFFF
+    ];
+
+    var DEFAULT_COLOR_BG = 0x000000;
+    var DEFAULT_COLOR_FG = 0xFFFFFF;
 
     var OPTION_IDS = [
       'opt-invert-colors',
@@ -357,10 +495,50 @@
       return inputs;
     }
 
+    function hexToCss(hex) {
+      var value = (hex & 0xFFFFFF).toString(16);
+      while (value.length < 6) {
+        value = '0' + value;
+      }
+      return '#' + value;
+    }
+
+    function getSelectedColor(name) {
+      var selected = document.querySelector('input[name="' + name + '"]:checked');
+      if (!selected) {
+        return name === 'color-bg' ? DEFAULT_COLOR_BG : DEFAULT_COLOR_FG;
+      }
+      return parseInt(selected.value, 10);
+    }
+
+    function updateCustomPanelVisibility() {
+      var enabled = document.getElementById('opt-custom-colors').checked;
+      document.getElementById('custom-colors').classList.toggle('hidden', !enabled);
+      var invertRow = document.getElementById('opt-invert-colors');
+      if (invertRow) {
+        invertRow.disabled = enabled;
+      }
+    }
+
+    function buildSwatchGrid(containerId, inputName, selectedHex) {
+      var container = document.getElementById(containerId);
+      var html = '';
+      var i, hex, css, checked;
+
+      for (i = 0; i < PEBBLE_PALETTE.length; i++) {
+        hex = PEBBLE_PALETTE[i];
+        css = hexToCss(hex);
+        checked = hex === selectedHex ? ' checked' : '';
+        html += '<label class="swatch"><input type="radio" name="' + inputName + '" value="' + hex + '"' + checked + '><span style="background:' + css + '"></span></label>';
+      }
+
+      container.innerHTML = html;
+    }
+
     function decodeConfig(configValue) {
       configValue = configValue | 0;
       return {
-        'opt-invert-colors': !!(configValue & FLAG_INVERT_COLORS),
+        'opt-invert-colors': !!(configValue & FLAG_INVERT_COLORS) && !(configValue & FLAG_CUSTOM_COLORS),
         'opt-seconds': !(configValue & FLAG_HIDE_SEC),
         'opt-frame': !(configValue & FLAG_HIDE_FRAME),
         'opt-phone-bt': !(configValue & FLAG_HIDE_BT_PHONE),
@@ -373,9 +551,13 @@
       var config = 0;
       var inputs = getInputs();
       var i, input, flag, positive;
+      var customEnabled = document.getElementById('opt-custom-colors').checked;
 
       for (i = 0; i < inputs.length; i++) {
         input = inputs[i];
+        if (input.id === 'opt-invert-colors' && customEnabled) {
+          continue;
+        }
         flag = parseInt(input.getAttribute('data-flag'), 10);
         positive = input.getAttribute('data-positive') === 'true';
 
@@ -388,13 +570,56 @@
         }
       }
 
+      config &= ~COLOR_FLAG_MASK;
+      if (customEnabled) {
+        config |= FLAG_CUSTOM_COLORS;
+      } else if (document.getElementById('opt-invert-colors').checked) {
+        config |= FLAG_INVERT_COLORS;
+      }
+
       return applyLeftWidgetToConfig(config, document.getElementById('left-widget').value);
     }
 
-    function applyConfig(configValue) {
+    function readInitialColors() {
+      var fromQueryBg = getQueryParam('color_bg', null);
+      var fromQueryFg = getQueryParam('color_fg', null);
+      var bg = DEFAULT_COLOR_BG;
+      var fg = DEFAULT_COLOR_FG;
+
+      if (fromQueryBg !== null && fromQueryBg !== false && fromQueryBg !== '') {
+        bg = parseInt(fromQueryBg, 10) & 0xFFFFFF;
+      } else {
+        var storedBg = localStorage.getItem(PKEY_COLOR_BG);
+        if (storedBg !== null) {
+          bg = parseInt(storedBg, 10) & 0xFFFFFF;
+        }
+      }
+
+      if (fromQueryFg !== null && fromQueryFg !== false && fromQueryFg !== '') {
+        fg = parseInt(fromQueryFg, 10) & 0xFFFFFF;
+      } else {
+        var storedFg = localStorage.getItem(PKEY_COLOR_FG);
+        if (storedFg !== null) {
+          fg = parseInt(storedFg, 10) & 0xFFFFFF;
+        }
+      }
+
+      if (isNaN(bg)) {
+        bg = DEFAULT_COLOR_BG;
+      }
+      if (isNaN(fg)) {
+        fg = DEFAULT_COLOR_FG;
+      }
+
+      return { bg: bg, fg: fg };
+    }
+
+    function applyConfig(configValue, colors) {
       var values = decodeConfig(configValue);
       var inputs = getInputs();
       var i, input;
+      var customEnabled = !!(configValue & FLAG_CUSTOM_COLORS);
+      var betaPanel = document.querySelector('.beta-panel');
 
       for (i = 0; i < inputs.length; i++) {
         input = inputs[i];
@@ -402,17 +627,40 @@
       }
 
       document.getElementById('left-widget').value = decodeLeftWidget(configValue);
+      document.getElementById('opt-custom-colors').checked = customEnabled;
+      if (customEnabled && betaPanel) {
+        betaPanel.open = true;
+      }
+
+      buildSwatchGrid('bg-swatch-grid', 'color-bg', colors.bg);
+      buildSwatchGrid('fg-swatch-grid', 'color-fg', colors.fg);
+      updateCustomPanelVisibility();
     }
 
     function getQueryParam(name, defaultValue) {
       var query = window.location.search.substring(1);
       var parts = query.split('&');
-      var i, pair;
+      var i, part, eq, key, value;
 
       for (i = 0; i < parts.length; i++) {
-        pair = parts[i].split('=');
-        if (pair[0] === name) {
-          return decodeURIComponent(pair[1].replace(/\+/g, ' '));
+        part = parts[i];
+        eq = part.indexOf('=');
+        if (eq < 0) {
+          continue;
+        }
+        try {
+          key = decodeURIComponent(part.substring(0, eq).replace(/\+/g, ' '));
+        } catch (ignore) {
+          key = part.substring(0, eq);
+        }
+        if (key !== name) {
+          continue;
+        }
+        value = part.substring(eq + 1);
+        try {
+          return decodeURIComponent(value.replace(/\+/g, ' '));
+        } catch (ignore2) {
+          return value;
         }
       }
 
@@ -454,12 +702,15 @@
         returnTo = 'pebblejs://close#';
       }
 
-      var closeUrl = returnTo + encoded;
+      // Some platforms deliver return_to already ending with '#'.
+      var closeUrl = returnTo.indexOf('#') >= 0 ? (returnTo + encoded) : (returnTo + '#' + encoded);
+
+      console.log('Closing config with: ' + closeUrl);
 
       // Pebble docs: document.location + return_to closes the config webview.
       document.location = closeUrl;
 
-      // iOS WKWebView often blocks custom schemes from data: pages; iframe works.
+      // iOS WKWebView often blocks custom schemes from HTTPS pages; iframe works.
       setTimeout(function() {
         var iframe = document.createElement('iframe');
         iframe.style.display = 'none';
@@ -467,24 +718,45 @@
         iframe.setAttribute('height', '0');
         iframe.src = closeUrl;
         document.body.appendChild(iframe);
-      }, 100);
+      }, 50);
+
+      setTimeout(function() {
+        var link = document.createElement('a');
+        link.href = closeUrl;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+      }, 150);
     }
 
     function saveAndClose() {
       var configValue = encodeConfig();
+      var bg = getSelectedColor('color-bg');
+      var fg = getSelectedColor('color-fg');
       localStorage.setItem(PKEY_CONFIG, String(configValue));
-      closeConfigPage({
+      localStorage.setItem(PKEY_COLOR_BG, String(bg));
+      localStorage.setItem(PKEY_COLOR_FG, String(fg));
+
+      var payload = {
         KEY_CONFIG_VALUE: configValue,
         config: configValue
-      });
+      };
+
+      if (configValue & FLAG_CUSTOM_COLORS) {
+        payload.KEY_COLOR_BG = bg;
+        payload.KEY_COLOR_FG = fg;
+      }
+
+      closeConfigPage(payload);
     }
 
     function bindUi() {
       document.getElementById('save-btn').addEventListener('click', saveAndClose);
+      document.getElementById('opt-custom-colors').addEventListener('change', updateCustomPanelVisibility);
     }
 
     bindUi();
-    applyConfig(readInitialConfig());
+    applyConfig(readInitialConfig(), readInitialColors());
   })();
   </script>
 </body>
