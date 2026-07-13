@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>11 Weeks Revival</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #eaeaea;
+      color: #333;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.4;
+      padding-bottom: 24px;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .header {
+      padding: 18px 16px 8px;
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      margin-top: 16px;
+    }
+
+    .section-title {
+      padding: 4px 16px;
+      color: #a8a8a8;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .section-body {
+      margin-top: 4px;
+      background: #f7f7f7;
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+    }
+
+    .section-foot {
+      padding: 8px 16px 0;
+      color: #a8a8a8;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .section-foot ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .section-foot li::before {
+      content: "• ";
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid #dedede;
+    }
+
+    .row:first-child { border-top: none; }
+
+    .row-label {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row-title {
+      font-size: 16px;
+    }
+
+    .row-hint {
+      margin-top: 2px;
+      color: #999;
+      font-size: 12px;
+    }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      flex-shrink: 0;
+      width: 52px;
+      height: 30px;
+    }
+
+    .toggle input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 52px;
+      height: 30px;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .toggle-track {
+      display: block;
+      width: 52px;
+      height: 30px;
+      border-radius: 6px;
+      background: #a8a8a8;
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 26px;
+      height: 26px;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+      transition: left 0.2s ease;
+      pointer-events: none;
+    }
+
+    .toggle input:checked + .toggle-track {
+      background: #ff4700;
+    }
+
+    .toggle input:checked + .toggle-track + .toggle-thumb {
+      left: 24px;
+    }
+
+    .widget-select {
+      flex-shrink: 0;
+      min-width: 132px;
+      max-width: 46%;
+      height: 32px;
+      padding: 0 28px 0 10px;
+      border: 1px solid #dedede;
+      border-radius: 6px;
+      background: #fff;
+      color: #333;
+      font-size: 14px;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #888 50%), linear-gradient(135deg, #888 50%, transparent 50%);
+      background-position: calc(100% - 16px) 13px, calc(100% - 11px) 13px;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .save-wrap {
+      padding: 20px 16px 0;
+      text-align: center;
+    }
+
+    .save-btn {
+      width: 70%;
+      max-width: 280px;
+      height: 40px;
+      border: none;
+      border-radius: 6px;
+      background: #ff4700;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+
+    .save-btn:active {
+      background: #e03e00;
+    }
+
+    .color-mode-group {
+      padding: 8px 16px 12px;
+      border-top: 1px solid #dedede;
+    }
+
+    .color-mode-options {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .color-mode-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .color-mode-option input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .color-mode-label {
+      display: block;
+      padding: 10px 6px;
+      border: 2px solid #dedede;
+      border-radius: 8px;
+      background: #fff;
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .color-mode-option input:checked + .color-mode-label {
+      border-color: #ff4700;
+      box-shadow: 0 0 0 1px #ff4700;
+    }
+
+    .color-mode-preview {
+      display: flex;
+      height: 18px;
+      margin-bottom: 6px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+    }
+
+    .color-mode-preview span {
+      flex: 1;
+    }
+
+    .custom-colors {
+      padding: 0 16px 12px;
+      border-top: 1px solid #dedede;
+    }
+
+    .custom-colors.hidden {
+      display: none;
+    }
+
+    .swatch-title {
+      margin: 12px 0 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+    }
+
+    .swatch {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+    }
+
+    .swatch input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .swatch span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+
+    .swatch input:checked + span {
+      border-color: #ff4700;
+      box-shadow: 0 0 0 1px #ff4700;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">11 Weeks Revival</div>
+
+  <div class="section">
+    <div class="section-title">Appearance</div>
+    <div class="section-body">
+      <div class="color-mode-group">
+        <div class="row-title">Color scheme</div>
+        <div class="color-mode-options">
+          <label class="color-mode-option">
+            <input type="radio" name="color-mode" value="default" checked>
+            <span class="color-mode-label">
+              <span class="color-mode-preview"><span style="background:#000"></span><span style="background:#fff"></span></span>
+              Default
+            </span>
+          </label>
+          <label class="color-mode-option">
+            <input type="radio" name="color-mode" value="inverted">
+            <span class="color-mode-label">
+              <span class="color-mode-preview"><span style="background:#fff"></span><span style="background:#000"></span></span>
+              Inverted
+            </span>
+          </label>
+          <label class="color-mode-option">
+            <input type="radio" name="color-mode" value="custom">
+            <span class="color-mode-label">
+              <span class="color-mode-preview"><span id="custom-preview-bg" style="background:#000"></span><span id="custom-preview-fg" style="background:#fff"></span></span>
+              Custom
+            </span>
+          </label>
+        </div>
+      </div>
+      <div id="custom-colors" class="custom-colors hidden">
+        <div class="swatch-title">Background</div>
+        <div id="bg-swatch-grid" class="swatch-grid"></div>
+        <div class="swatch-title">Foreground</div>
+        <div id="fg-swatch-grid" class="swatch-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Watchface components</div>
+    <div class="section-body">
+      <label class="row" for="opt-seconds">
+        <span class="row-label">
+          <span class="row-title">Seconds tracker</span>
+          <span class="row-hint">Tap watch face to show/hide when enabled</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-seconds" data-flag="1" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <label class="row" for="opt-frame">
+        <span class="row-label">
+          <span class="row-title">Outline frame</span>
+          <span class="row-hint">Animated second ring around the clock</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-frame" data-flag="2" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <div class="row">
+        <span class="row-label">
+          <span class="row-title">Left bar</span>
+          <span class="row-hint">Step tracker shows a star at 10,000 steps</span>
+        </span>
+        <select id="left-widget" class="widget-select">
+          <option value="battery">Pebble battery</option>
+          <option value="steps">Step tracker</option>
+          <option value="off">Off</option>
+        </select>
+      </div>
+
+      <label class="row" for="opt-phone-bt">
+        <span class="row-label">
+          <span class="row-title">Phone battery &amp; Bluetooth</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-phone-bt" data-flag="8" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+
+      <label class="row" for="opt-quiet-time">
+        <span class="row-label">
+          <span class="row-title">Quiet time indicator</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-quiet-time" data-flag="32" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </div>
+    <div class="section-foot">
+      <ul>
+        <li>Frame and seconds use second ticks and use more battery.</li>
+        <li>When both are off, the watchface updates once per minute.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Calendar</div>
+    <div class="section-body">
+      <label class="row" for="opt-week-monday">
+        <span class="row-label">
+          <span class="row-title">Week starts on Monday</span>
+          <span class="row-hint">Off = Sunday start</span>
+        </span>
+        <span class="toggle">
+          <input type="checkbox" id="opt-week-monday" data-flag="16" checked>
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="save-wrap">
+    <button type="button" id="save-btn" class="save-btn">SAVE</button>
+  </div>
+
+  <script>
+  var INJECTED_CONFIG = null;
+  var RETURN_TO = 'pebblejs://close#';
+  </script>
+  <script>
+  (function() {
+    'use strict';
+
+    var PKEY_CONFIG = '11weeks-revival-config';
+    var PKEY_COLOR_BG = '11weeks-revival-color-bg';
+    var PKEY_COLOR_FG = '11weeks-revival-color-fg';
+
+    /* Flag bits — must match src/config.c */
+    var FLAG_HIDE_SEC = 1;
+    var FLAG_HIDE_FRAME = 2;
+    var FLAG_HIDE_BATTERY = 4;
+    var FLAG_HIDE_BT_PHONE = 8;
+    var FLAG_WEEK_START_SUNDAY = 16;
+    var FLAG_HIDE_QUIET_TIME = 32;
+    var FLAG_SHOW_STEPS = 64;
+    var FLAG_INVERT_COLORS = 128;
+    var FLAG_CUSTOM_COLORS = 256;
+    var COLOR_FLAG_MASK = FLAG_INVERT_COLORS | FLAG_CUSTOM_COLORS;
+
+    var PEBBLE_PALETTE = [
+      0x000000, 0x000055, 0x0000AA, 0x0000FF, 0x005500, 0x005555, 0x0055AA, 0x0055FF,
+      0x00AA00, 0x00AA55, 0x00AAAA, 0x00AAFF, 0x00FF00, 0x00FF55, 0x00FFAA, 0x00FFFF,
+      0x550000, 0x550055, 0x5500AA, 0x5500FF, 0x555500, 0x555555, 0x5555AA, 0x5555FF,
+      0x55AA00, 0x55AA55, 0x55AAAA, 0x55AAFF, 0x55FF00, 0x55FF55, 0x55FFAA, 0x55FFFF,
+      0xAA0000, 0xAA0055, 0xAA00AA, 0xAA00FF, 0xAA5500, 0xAA5555, 0xAA55AA, 0xAA55FF,
+      0xAAAA00, 0xAAAA55, 0xAAAAAA, 0xAAAAFF, 0xAAFF00, 0xAAFF55, 0xAAFFAA, 0xAAFFFF,
+      0xFF0000, 0xFF0055, 0xFF00AA, 0xFF00FF, 0xFF5500, 0xFF5555, 0xFF55AA, 0xFF55FF,
+      0xFFAA00, 0xFFAA55, 0xFFAAAA, 0xFFAAFF, 0xFFFF00, 0xFFFF55, 0xFFFFAA, 0xFFFFFF
+    ];
+
+    var DEFAULT_COLOR_BG = 0x000000;
+    var DEFAULT_COLOR_FG = 0xFFFFFF;
+
+    var OPTION_IDS = [
+      'opt-seconds',
+      'opt-frame',
+      'opt-phone-bt',
+      'opt-quiet-time',
+      'opt-week-monday'
+    ];
+
+    var LEFT_WIDGET_FLAGS = FLAG_HIDE_BATTERY | FLAG_SHOW_STEPS;
+
+    function decodeLeftWidget(configValue) {
+      if (configValue & FLAG_SHOW_STEPS) {
+        return 'steps';
+      }
+      if (configValue & FLAG_HIDE_BATTERY) {
+        return 'off';
+      }
+      return 'battery';
+    }
+
+    function applyLeftWidgetToConfig(config, mode) {
+      config &= ~LEFT_WIDGET_FLAGS;
+
+      if (mode === 'steps') {
+        config |= FLAG_HIDE_BATTERY | FLAG_SHOW_STEPS;
+      } else if (mode === 'off') {
+        config |= FLAG_HIDE_BATTERY;
+      }
+
+      return config;
+    }
+
+    function getInputs() {
+      var inputs = [];
+      for (var i = 0; i < OPTION_IDS.length; i++) {
+        inputs.push(document.getElementById(OPTION_IDS[i]));
+      }
+      return inputs;
+    }
+
+    function hexToCss(hex) {
+      var value = (hex & 0xFFFFFF).toString(16);
+      while (value.length < 6) {
+        value = '0' + value;
+      }
+      return '#' + value;
+    }
+
+    function decodeColorMode(configValue) {
+      if (configValue & FLAG_CUSTOM_COLORS) {
+        return 'custom';
+      }
+      if (configValue & FLAG_INVERT_COLORS) {
+        return 'inverted';
+      }
+      return 'default';
+    }
+
+    function applyColorModeToConfig(config, mode) {
+      config &= ~COLOR_FLAG_MASK;
+      if (mode === 'inverted') {
+        config |= FLAG_INVERT_COLORS;
+      } else if (mode === 'custom') {
+        config |= FLAG_CUSTOM_COLORS;
+      }
+      return config;
+    }
+
+    function getSelectedColor(name) {
+      var selected = document.querySelector('input[name="' + name + '"]:checked');
+      if (!selected) {
+        return name === 'color-bg' ? DEFAULT_COLOR_BG : DEFAULT_COLOR_FG;
+      }
+      return parseInt(selected.value, 10);
+    }
+
+    function setSelectedColor(name, hex) {
+      var input = document.querySelector('input[name="' + name + '"][value="' + hex + '"]');
+      if (input) {
+        input.checked = true;
+      }
+    }
+
+    function updateCustomPreview() {
+      document.getElementById('custom-preview-bg').style.background = hexToCss(getSelectedColor('color-bg'));
+      document.getElementById('custom-preview-fg').style.background = hexToCss(getSelectedColor('color-fg'));
+    }
+
+    function updateCustomPanelVisibility() {
+      var mode = document.querySelector('input[name="color-mode"]:checked');
+      var panel = document.getElementById('custom-colors');
+      panel.classList.toggle('hidden', !mode || mode.value !== 'custom');
+    }
+
+    function buildSwatchGrid(containerId, inputName, selectedHex) {
+      var container = document.getElementById(containerId);
+      var html = '';
+      var i, hex, css, checked;
+
+      for (i = 0; i < PEBBLE_PALETTE.length; i++) {
+        hex = PEBBLE_PALETTE[i];
+        css = hexToCss(hex);
+        checked = hex === selectedHex ? ' checked' : '';
+        html += '<label class="swatch"><input type="radio" name="' + inputName + '" value="' + hex + '"' + checked + '><span style="background:' + css + '"></span></label>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    function decodeConfig(configValue) {
+      configValue = configValue | 0;
+      return {
+        'opt-seconds': !(configValue & FLAG_HIDE_SEC),
+        'opt-frame': !(configValue & FLAG_HIDE_FRAME),
+        'opt-phone-bt': !(configValue & FLAG_HIDE_BT_PHONE),
+        'opt-quiet-time': !(configValue & FLAG_HIDE_QUIET_TIME),
+        'opt-week-monday': !(configValue & FLAG_WEEK_START_SUNDAY)
+      };
+    }
+
+    function encodeConfig() {
+      var config = 0;
+      var inputs = getInputs();
+      var i, input, flag, positive;
+
+      for (i = 0; i < inputs.length; i++) {
+        input = inputs[i];
+        flag = parseInt(input.getAttribute('data-flag'), 10);
+        positive = input.getAttribute('data-positive') === 'true';
+
+        if (positive) {
+          if (input.checked) {
+            config |= flag;
+          }
+        } else if (!input.checked) {
+          config |= flag;
+        }
+      }
+
+      return applyLeftWidgetToConfig(config, document.getElementById('left-widget').value);
+    }
+
+      return applyLeftWidgetToConfig(config, document.getElementById('left-widget').value);
+    }
+
+    function encodeConfigWithColors() {
+      var config = encodeConfig();
+      var modeInput = document.querySelector('input[name="color-mode"]:checked');
+      var mode = modeInput ? modeInput.value : 'default';
+      config = applyColorModeToConfig(config, mode);
+      return config;
+    }
+
+    function readInitialColors() {
+      var fromQueryBg = getQueryParam('color_bg', null);
+      var fromQueryFg = getQueryParam('color_fg', null);
+      var bg = DEFAULT_COLOR_BG;
+      var fg = DEFAULT_COLOR_FG;
+
+      if (fromQueryBg !== null && fromQueryBg !== false && fromQueryBg !== '') {
+        bg = parseInt(fromQueryBg, 10) & 0xFFFFFF;
+      } else {
+        var storedBg = localStorage.getItem(PKEY_COLOR_BG);
+        if (storedBg !== null) {
+          bg = parseInt(storedBg, 10) & 0xFFFFFF;
+        }
+      }
+
+      if (fromQueryFg !== null && fromQueryFg !== false && fromQueryFg !== '') {
+        fg = parseInt(fromQueryFg, 10) & 0xFFFFFF;
+      } else {
+        var storedFg = localStorage.getItem(PKEY_COLOR_FG);
+        if (storedFg !== null) {
+          fg = parseInt(storedFg, 10) & 0xFFFFFF;
+        }
+      }
+
+      if (isNaN(bg)) {
+        bg = DEFAULT_COLOR_BG;
+      }
+      if (isNaN(fg)) {
+        fg = DEFAULT_COLOR_FG;
+      }
+
+      return { bg: bg, fg: fg };
+    }
+
+    function applyConfig(configValue, colors) {
+      var values = decodeConfig(configValue);
+      var inputs = getInputs();
+      var i, input;
+      var mode = decodeColorMode(configValue);
+      var modeInput;
+
+      for (i = 0; i < inputs.length; i++) {
+        input = inputs[i];
+        input.checked = !!values[input.id];
+      }
+
+      document.getElementById('left-widget').value = decodeLeftWidget(configValue);
+
+      modeInput = document.querySelector('input[name="color-mode"][value="' + mode + '"]');
+      if (modeInput) {
+        modeInput.checked = true;
+      }
+
+      buildSwatchGrid('bg-swatch-grid', 'color-bg', colors.bg);
+      buildSwatchGrid('fg-swatch-grid', 'color-fg', colors.fg);
+      updateCustomPanelVisibility();
+      updateCustomPreview();
+    }
+
+    function getQueryParam(name, defaultValue) {
+      var query = window.location.search.substring(1);
+      var parts = query.split('&');
+      var i, pair;
+
+      for (i = 0; i < parts.length; i++) {
+        pair = parts[i].split('=');
+        if (pair[0] === name) {
+          return decodeURIComponent(pair[1].replace(/\+/g, ' '));
+        }
+      }
+
+      return defaultValue;
+    }
+
+    function readInitialConfig() {
+      if (typeof INJECTED_CONFIG === 'number' && !isNaN(INJECTED_CONFIG)) {
+        return INJECTED_CONFIG | 0;
+      }
+
+      var fromQuery = getQueryParam('config', null);
+      if (fromQuery !== null && fromQuery !== false && fromQuery !== '') {
+        var parsed = parseInt(fromQuery, 10);
+        if (!isNaN(parsed)) {
+          return parsed;
+        }
+      }
+
+      var stored = localStorage.getItem(PKEY_CONFIG);
+      if (stored !== null) {
+        var storedValue = parseInt(stored, 10);
+        if (!isNaN(storedValue)) {
+          return storedValue;
+        }
+      }
+
+      return 0;
+    }
+
+    function closeConfigPage(payload) {
+      var encoded = encodeURIComponent(JSON.stringify(payload));
+      var returnTo = getQueryParam('return_to', null);
+
+      if (!returnTo && typeof RETURN_TO === 'string' && RETURN_TO) {
+        returnTo = RETURN_TO;
+      }
+      if (!returnTo) {
+        returnTo = 'pebblejs://close#';
+      }
+
+      var closeUrl = returnTo + encoded;
+
+      // Pebble docs: document.location + return_to closes the config webview.
+      document.location = closeUrl;
+
+      // iOS WKWebView often blocks custom schemes from data: pages; iframe works.
+      setTimeout(function() {
+        var iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.setAttribute('width', '0');
+        iframe.setAttribute('height', '0');
+        iframe.src = closeUrl;
+        document.body.appendChild(iframe);
+      }, 100);
+    }
+
+    function saveAndClose() {
+      var configValue = encodeConfigWithColors();
+      var bg = getSelectedColor('color-bg');
+      var fg = getSelectedColor('color-fg');
+      localStorage.setItem(PKEY_CONFIG, String(configValue));
+      localStorage.setItem(PKEY_COLOR_BG, String(bg));
+      localStorage.setItem(PKEY_COLOR_FG, String(fg));
+
+      var payload = {
+        KEY_CONFIG_VALUE: configValue,
+        config: configValue
+      };
+
+      if (configValue & FLAG_CUSTOM_COLORS) {
+        payload.KEY_COLOR_BG = bg;
+        payload.KEY_COLOR_FG = fg;
+      }
+
+      closeConfigPage(payload);
+    }
+
+    function bindUi() {
+      document.getElementById('save-btn').addEventListener('click', saveAndClose);
+      document.getElementById('custom-colors').addEventListener('change', updateCustomPreview);
+      var modeInputs = document.querySelectorAll('input[name="color-mode"]');
+      var i;
+      for (i = 0; i < modeInputs.length; i++) {
+        modeInputs[i].addEventListener('change', updateCustomPanelVisibility);
+      }
+    }
+
+    bindUi();
+    applyConfig(readInitialConfig(), readInitialColors());
+  })();
+  </script>
+</body>
+</html>
