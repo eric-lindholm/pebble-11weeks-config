@@ -690,12 +690,27 @@
     function getQueryParam(name, defaultValue) {
       var query = window.location.search.substring(1);
       var parts = query.split('&');
-      var i, pair;
+      var i, part, eq, key, value;
 
       for (i = 0; i < parts.length; i++) {
-        pair = parts[i].split('=');
-        if (pair[0] === name) {
-          return decodeURIComponent(pair[1].replace(/\+/g, ' '));
+        part = parts[i];
+        eq = part.indexOf('=');
+        if (eq < 0) {
+          continue;
+        }
+        try {
+          key = decodeURIComponent(part.substring(0, eq).replace(/\+/g, ' '));
+        } catch (ignore) {
+          key = part.substring(0, eq);
+        }
+        if (key !== name) {
+          continue;
+        }
+        value = part.substring(eq + 1);
+        try {
+          return decodeURIComponent(value.replace(/\+/g, ' '));
+        } catch (ignore2) {
+          return value;
         }
       }
 
@@ -737,12 +752,15 @@
         returnTo = 'pebblejs://close#';
       }
 
-      var closeUrl = returnTo + encoded;
+      // Some platforms deliver return_to already ending with '#'.
+      var closeUrl = returnTo.indexOf('#') >= 0 ? (returnTo + encoded) : (returnTo + '#' + encoded);
+
+      console.log('Closing config with: ' + closeUrl);
 
       // Pebble docs: document.location + return_to closes the config webview.
       document.location = closeUrl;
 
-      // iOS WKWebView often blocks custom schemes from data: pages; iframe works.
+      // iOS WKWebView often blocks custom schemes from HTTPS pages; iframe works.
       setTimeout(function() {
         var iframe = document.createElement('iframe');
         iframe.style.display = 'none';
@@ -750,7 +768,15 @@
         iframe.setAttribute('height', '0');
         iframe.src = closeUrl;
         document.body.appendChild(iframe);
-      }, 100);
+      }, 50);
+
+      setTimeout(function() {
+        var link = document.createElement('a');
+        link.href = closeUrl;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+      }, 150);
     }
 
     function saveAndClose() {
